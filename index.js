@@ -1,13 +1,13 @@
 'use strict';
 
-const authorEl = document.querySelector('#author')
+const authorEl = document.querySelector('#author');
+const cryptoTitleEl = document.querySelector('#crypto-title');
+const cryptoPricesEl = document.querySelector('#crypto-prices');
 
 function setBackgroundImage() {
     fetch('https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&query=nature')
         .then(res => res.json())
         .then(data => {
-            console.log(data.urls.full)
-            console.log(data.user.name)
             document.body.style.backgroundImage = `url(${data.urls.full})`; 
             authorEl.textContent = `By: ${data.user.name}`;
         })
@@ -18,3 +18,23 @@ function setBackgroundImage() {
 }
 
 setBackgroundImage();
+
+fetch('https://api.coingecko.com/api/v3/coins/dogecoin')
+    .then(res => {
+        if (!res.ok) {
+            throw Error('something went wrong');
+        }
+        return res.json();
+    })
+    .then(data => {
+        cryptoTitleEl.innerHTML = `
+            <img src="${data.image.small}" alt="${data.name} icon">
+            <span>${data.name}</span>
+        `;
+        cryptoPricesEl.innerHTML = `
+            <p>🎯: $${data.market_data.current_price.usd}</p>
+            <p>👆: $${data.market_data.high_24h.usd}</p>
+            <p>👇: $${data.market_data.low_24h.usd}</p>
+        `;
+    })
+    .catch(err => console.error(err));

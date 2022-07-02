@@ -35,3 +35,20 @@ main {
 h1 {
     text-align: center;
 }
+
+div.crypto {
+    font-size: 1.3rem;
+}
+
+div#crypto-title {
+    display: flex;
+    align-items: center;
+}
+
+div#crypto-title > span {
+    margin-left: .5em;
+}
+
+div#crypto-prices > p {
+    margin: 0;
+}
