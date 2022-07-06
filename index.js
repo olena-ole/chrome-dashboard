@@ -4,6 +4,7 @@ const authorEl = document.querySelector('#author');
 const cryptoTitleEl = document.querySelector('#crypto-title');
 const cryptoPricesEl = document.querySelector('#crypto-prices');
 const timeEl = document.querySelector('#time');
+const units = 'metric';
 
 
 function setBackgroundImage() {
@@ -45,6 +46,28 @@ function displayCurrentTime() {
     const time = new Date();
     timeEl.textContent = time.toLocaleString('en-US', {timeStyle: "short"});
 };
+
+function success(position) {
+    fetch(`https://apis.scrimba.com/openweathermap/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=${units}`)
+        .then(res => {
+            if (!res.ok) {
+                throw Error('The weather is currently unavailable');
+            }
+            return res.json();
+        })
+        .then(data => console.log(data))
+        .catch(err => console.error(err));
+};
+
+function error() {
+    console.log('Unable to access your current position');
+};
+
+if(!navigator.geolocation) {
+    console.log('Geolocation is not supported by your browser');
+  } else {
+    navigator.geolocation.getCurrentPosition(success, error);
+  }
 
 setBackgroundImage();
 displayDogecoinRate();
