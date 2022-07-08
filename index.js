@@ -5,6 +5,7 @@ const cryptoTitleEl = document.querySelector('#crypto-title');
 const cryptoPricesEl = document.querySelector('#crypto-prices');
 const timeEl = document.querySelector('#time');
 const units = 'metric';
+const weatherDiv = document.querySelector('#weather');
 
 
 function setBackgroundImage() {
@@ -55,7 +56,14 @@ function success(position) {
             }
             return res.json();
         })
-        .then(data => console.log(data))
+        .then(data => {
+            const iconId = data.weather[0].icon;
+            weatherDiv.innerHTML = `
+                <img src="http://openweathermap.org/img/wn/${iconId}@2x.png" alt="">
+                <p class="weather-temp">${Math.round(data.main.temp)}°C</p>
+                <p class="weather-city">${data.name}</p>
+            `;
+        })
         .catch(err => console.error(err));
 };
 
